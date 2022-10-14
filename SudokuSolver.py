@@ -23,11 +23,12 @@ for y in range(9):
         puzzle_3x3_data[sqi].append(puzzle[y][x])
         puzzle_columns[x].append(puzzle[y][x])
         
-# Main algorithm loop
+# Some variables for the main algorithm loop
 x = y = 0
 init_val = 0
 past_coords = []
 
+# Main algorithm loop
 while y < 9:
     
     if puzzle[y][x] == 0:
@@ -64,12 +65,21 @@ while y < 9:
             col_list[y] = 0
             
             continue
-        
+    
+# Movement unit. Change it to alter how coordinates are changed.
     if x < 8:
         x += 1
     else:
         x = 0
         y += 1
+        
+
+# HOW IT WORKS:
+# Iterates over each coordinate as defined by movement unit. And if it's 0, then 
+# tries to find a number between 1-9, that doesn't exist in its row, column,
+# and 3x3 square. If this number exists, algorithm skips to next coordinate. Else, 
+# goes to the former numerated coordinate, and tries to find another value for it.
+# The code exits when Sudoku gets completed or it finds out it is impossible to complete it.
 
 solution = [[5,3,4,6,7,8,9,1,2],
             [6,7,2,1,9,5,3,4,8],
