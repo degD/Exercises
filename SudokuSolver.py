@@ -9,49 +9,24 @@ puzzle = [[5,3,0,0,7,0,0,0,0],
           [0,0,0,4,1,9,0,0,5],
           [0,0,0,0,8,0,0,7,9]]
 
-# TODO: RE-DO!!!
+def square_index(y, x):
+   return (x % 3) + (y % 3)*3
 
-def sudoku_solver_1(puzzle):
-    """Solves sudoku using a brute-force approach. 
-    Solves from left-to-right and top-to-bottom.
-    
-    It takes a 9x9 unsolved sudoku and returns it's result."""
-    
-    # Algorithm definitions
-    oldval = x = y = 0
-    past_coords = []
+# Defining some values prior to start
+puzzle_3x3_data = [[]*9]
+puzzle_columns = [[]*9]
 
-    # Main loop
-    while y < 9:
+for y in range(9):
+    for x in range(9):
         
-        if puzzle[y][x] == 0:
-            
-            row = puzzle[y]
-            col = [puzzle[i][x] for i in range(9)]
-            
-            for num in range(oldval+1, 10):
-                if (num not in row) and (num not in col):
-                    puzzle[y][x] = num
-                    break
-            
-            if puzzle[y][x]:
-                oldval = 0
-                past_coords.append((y, x))
-            
-            else:
-                y, x = past_coords.pop()
-                oldval = puzzle[y][x]
-                puzzle[y][x] = 0
-                continue
+        sqi = square_index(y, x)
+        puzzle_3x3_data[sqi].append((y, x))
+        puzzle_columns[x].append((y, x))
         
-        # Movement algorithm     
-        if x < 8:
-            x += 1
-        else:
-            y += 1
-            x = 0
+# Main algorithm loop
         
-    return puzzle
+        
+        
 
 solution = [[5,3,4,6,7,8,9,1,2],
             [6,7,2,1,9,5,3,4,8],
