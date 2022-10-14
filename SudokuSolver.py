@@ -1,4 +1,7 @@
 
+from ast import Index
+
+
 puzzle = [[5,3,0,0,7,0,0,0,0],
           [6,0,0,1,9,5,0,0,0],
           [0,9,8,0,0,0,0,6,0],
@@ -9,71 +12,78 @@ puzzle = [[5,3,0,0,7,0,0,0,0],
           [0,0,0,4,1,9,0,0,5],
           [0,0,0,0,8,0,0,7,9]]
 
-def square_index(y, x):
-   return (x // 3) + (y // 3)*3
+def SudokuSolver(puzzle):
+    """Solves the given 9x9 sudoku and returns the result. 
+    Returns 0 if the sudoku is unsolvable"""
+    def square_index(y, x):
+        return (x // 3) + (y // 3)*3
 
-# Defining some values prior to start
-puzzle_3x3_data = [list() for _ in range(9)]
-puzzle_columns = [list() for _ in range(9)]
+    # Defining some values prior to start
+    puzzle_3x3_data = [list() for _ in range(9)]
+    puzzle_columns = [list() for _ in range(9)]
 
-for y in range(9):
-    for x in range(9):
-        
-        sqi = square_index(y, x)
-        puzzle_3x3_data[sqi].append(puzzle[y][x])
-        puzzle_columns[x].append(puzzle[y][x])
-        
-# Some variables for the main algorithm loop
-x = y = 0
-init_val = 0
-past_coords = []
-
-# Main algorithm loop
-while y < 9:
-    
-    if puzzle[y][x] == 0:
-        
-        sqi = square_index(y, x)
-        
-        squ_list = puzzle_3x3_data[sqi]
-        col_list = puzzle_columns[x]
-        row_list = puzzle[y]
-        
-        for num in range(init_val+1, 10):
-            if (num not in squ_list) and (num not in col_list) and (num not in row_list):
-                puzzle[y][x] = num
-                break
+    for y in range(9):
+        for x in range(9):
             
-        if puzzle[y][x]:
-            squ_list.remove(0)
-            squ_list.append(num)
-            col_list[y] = num
-            
-            init_val = 0
-            past_coords.append((y, x))
-            
-        else:
-            y, x = past_coords.pop()
-            init_val = puzzle[y][x]
-            puzzle[y][x] = 0
-
             sqi = square_index(y, x)
-            squ_list = puzzle_3x3_data[sqi]
-            squ_list.remove(init_val)
-            squ_list.append(0)
-            col_list = puzzle_columns[x]
-            col_list[y] = 0
+            puzzle_3x3_data[sqi].append(puzzle[y][x])
+            puzzle_columns[x].append(puzzle[y][x])
             
-            continue
-    
-# Movement unit. Change it to alter how coordinates are changed.
-    if x < 8:
-        x += 1
-    else:
-        x = 0
-        y += 1
-        
+    # Some variables for the main algorithm loop
+    x = y = 0
+    init_val = 0
+    past_coords = []
 
+    # Main algorithm loop
+    while y < 9:
+        
+        if puzzle[y][x] == 0:
+            
+            sqi = square_index(y, x)
+            
+            squ_list = puzzle_3x3_data[sqi]
+            col_list = puzzle_columns[x]
+            row_list = puzzle[y]
+            
+            for num in range(init_val+1, 10):
+                if (num not in squ_list) and (num not in col_list) and (num not in row_list):
+                    puzzle[y][x] = num
+                    break
+                
+            if puzzle[y][x]:
+                squ_list.remove(0)
+                squ_list.append(num)
+                col_list[y] = num
+                
+                init_val = 0
+                past_coords.append((y, x))
+                
+            else:
+                try:
+                    y, x = past_coords.pop()
+                except IndexError:
+                    return 0
+                init_val = puzzle[y][x]
+                puzzle[y][x] = 0
+
+                sqi = square_index(y, x)
+                squ_list = puzzle_3x3_data[sqi]
+                squ_list.remove(init_val)
+                squ_list.append(0)
+                col_list = puzzle_columns[x]
+                col_list[y] = 0
+                
+                continue
+    
+    # Movement unit. Change it to alter how coordinates are changed.
+        if x < 8:
+            x += 1
+        else:
+            x = 0
+            y += 1
+            
+    return puzzle
+        
 # HOW IT WORKS:
 # Iterates over each coordinate as defined by movement unit. And if it's 0, then 
 # tries to find a number between 1-9, that doesn't exist in its row, column,
