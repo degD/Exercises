@@ -1,15 +1,18 @@
 
-
 def SudokuSolver(puzzle):
     """Solves the given 9x9 sudoku and returns the result. 
     Returns 0 if the sudoku is unsolvable"""
+    
     def square_index(y, x):
         return (x // 3) + (y // 3)*3
+    
+    def square_coords(y, x):
+        return (y // 3), (x // 3)
 
     # Defining some values prior to start
     puzzle_3x3_data = [list() for _ in range(9)]
     puzzle_columns = [list() for _ in range(9)]
-
+    
     for y in range(9):
         for x in range(9):
             
@@ -18,13 +21,12 @@ def SudokuSolver(puzzle):
             puzzle_columns[x].append(puzzle[y][x])
             
     # Some variables for the main algorithm loop
-    x = y = 0
+    mx = my = x = y = 0
     init_val = 0
     past_coords = []
-    direction = 'r'
 
     # Main algorithm loop
-    while y < 9:
+    while my < 3:
         
         if puzzle[y][x] == 0:
             
@@ -62,20 +64,28 @@ def SudokuSolver(puzzle):
                 col_list = puzzle_columns[x]
                 col_list[y] = 0
                 
+                my, mx = square_coords(y, x)
+                
                 continue
     
     # Movement unit. Change it to alter how coordinates are changed.
-        if direction == 'r' and x < 8:
+        if x < mx*3+2:
             x += 1
-        elif direction == 'l' and x > 0:
-            x -= 1
         else:
+            x -= 2
             y += 1
-            if direction == 'r':
-                direction = 'l'
-            else:
-                direction = 'r'
+                
+        if y == my*3+3:
             
+            if mx < 2:
+                mx += 1
+            else:
+                mx = 0
+                my += 1
+                
+            x = mx*3
+            y = my*3
+               
     return puzzle
         
 # HOW IT WORKS:
@@ -103,7 +113,7 @@ if __name__ == '__main__':
         
         time_ms = int(round(stop-start, 3)*1000)
         print(f"{time_ms}ms")
-    
+
     # Test case 1: An easy sudoku
     puzzle1 = [[5,3,0,0,7,0,0,0,0],
               [6,0,0,1,9,5,0,0,0],
