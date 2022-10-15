@@ -21,6 +21,7 @@ def SudokuSolver(puzzle):
     x = y = 0
     init_val = 0
     past_coords = []
+    direction = 'r'
 
     # Main algorithm loop
     while y < 9:
@@ -64,11 +65,16 @@ def SudokuSolver(puzzle):
                 continue
     
     # Movement unit. Change it to alter how coordinates are changed.
-        if x < 8:
+        if direction == 'r' and x < 8:
             x += 1
+        elif direction == 'l' and x > 0:
+            x -= 1
         else:
-            x = 0
             y += 1
+            if direction == 'r':
+                direction = 'l'
+            else:
+                direction = 'r'
             
     return puzzle
         
@@ -78,7 +84,6 @@ def SudokuSolver(puzzle):
 # and 3x3 square. If this number exists, algorithm skips to next coordinate. Else, 
 # goes to the former numerated coordinate, and tries to find another value for it.
 # The code exits when Sudoku gets completed or it finds out it is impossible to complete it.
-
 
 
 if __name__ == '__main__':
