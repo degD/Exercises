@@ -94,11 +94,12 @@ if __name__ == '__main__':
         stop = time.perf_counter()
         
         if result and result == solution:
-            print("Sudoku solved right.")
+            print("Sudoku solved right ", end='')
         
         time_ms = int(round(stop-start, 3)*1000)
         print(f"{time_ms}ms")
-        
+    
+    # Test case 1: An easy sudoku
     puzzle1 = [[5,3,0,0,7,0,0,0,0],
               [6,0,0,1,9,5,0,0,0],
               [0,9,8,0,0,0,0,6,0],
@@ -120,3 +121,16 @@ if __name__ == '__main__':
                 [3,4,5,2,8,6,1,7,9]]
     
     sudoku_test(puzzle1, solution=solution1)
+    
+    # Test case 2: A hard sudoku
+    problem = [[9, 0, 0, 0, 8, 0, 0, 0, 1],
+               [0, 0, 0, 4, 0, 6, 0, 0, 0],
+               [0, 0, 5, 0, 7, 0, 3, 0, 0],
+               [0, 6, 0, 0, 0, 0, 0, 4, 0],
+               [4, 0, 1, 0, 6, 0, 5, 0, 8],
+               [0, 9, 0, 0, 0, 0, 0, 2, 0],
+               [0, 0, 7, 0, 3, 0, 2, 0, 0],
+               [0, 0, 0, 7, 0, 5, 0, 0, 0],
+               [1, 0, 0, 0, 4, 0, 0, 0, 7]]
+    
+    sudoku_test(problem)
