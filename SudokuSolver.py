@@ -83,6 +83,8 @@ def SudokuSolver(puzzle):
 
 if __name__ == '__main__':
     
+    import time
+    
     puzzle = [[5,3,0,0,7,0,0,0,0],
               [6,0,0,1,9,5,0,0,0],
               [0,9,8,0,0,0,0,6,0],
@@ -103,6 +105,10 @@ if __name__ == '__main__':
                 [2,8,7,4,1,9,6,3,5],
                 [3,4,5,2,8,6,1,7,9]]
     
-    if SudokuSolver(puzzle) == solution:
-        print('Easy puzzle solvable!')
-
+    start = time.perf_counter()
+    result = SudokuSolver(puzzle)
+    stop = time.perf_counter()
+    
+    time_ms = int(round(stop-start, 3)*1000)
+    if result == solution:
+        print(f'Sudoku solved! ({time_ms}ms)')
