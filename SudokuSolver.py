@@ -85,7 +85,21 @@ if __name__ == '__main__':
     
     import time
     
-    puzzle = [[5,3,0,0,7,0,0,0,0],
+    def sudoku_test(puzzle, solution=False):
+        """Test the sudoku algorithm. Print the time it take to solve.
+        Also check with solution if given. And print a message by the results."""
+        
+        start = time.perf_counter()
+        result = SudokuSolver(puzzle)
+        stop = time.perf_counter()
+        
+        if result and result == solution:
+            print("Sudoku solved right.")
+        
+        time_ms = int(round(stop-start, 3)*1000)
+        print(f"{time_ms}ms")
+        
+    puzzle1 = [[5,3,0,0,7,0,0,0,0],
               [6,0,0,1,9,5,0,0,0],
               [0,9,8,0,0,0,0,6,0],
               [8,0,0,0,6,0,0,0,3],
@@ -95,7 +109,7 @@ if __name__ == '__main__':
               [0,0,0,4,1,9,0,0,5],
               [0,0,0,0,8,0,0,7,9]]
 
-    solution = [[5,3,4,6,7,8,9,1,2],
+    solution1 = [[5,3,4,6,7,8,9,1,2],
                 [6,7,2,1,9,5,3,4,8],
                 [1,9,8,3,4,2,5,6,7],
                 [8,5,9,7,6,1,4,2,3],
@@ -105,10 +119,4 @@ if __name__ == '__main__':
                 [2,8,7,4,1,9,6,3,5],
                 [3,4,5,2,8,6,1,7,9]]
     
-    start = time.perf_counter()
-    result = SudokuSolver(puzzle)
-    stop = time.perf_counter()
-    
-    time_ms = int(round(stop-start, 3)*1000)
-    if result == solution:
-        print(f'Sudoku solved! ({time_ms}ms)')
+    sudoku_test(puzzle1, solution=solution1)
